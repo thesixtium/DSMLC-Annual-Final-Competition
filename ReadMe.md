@@ -39,6 +39,26 @@ streamlit run C:/Users/path/to/DSMLC-Annual-Final-Competition/app.py
 
 4. Go to the website in your [local browser with port 8501](http://localhost:8501/)
 
+## Retraining
+
+To retrain all the models, do the following:
+
+1. Navigate to the folder "DSMLC-Annual-Final-Competition"
+```bash
+cd C:\Users\path\to\DSMLC-Annual-Final-Competition
+```
+
+2. Run Jupyter Notebook
+```bash
+jupyter notebook
+```
+
+3. Hit "Run All" within the notebook
+
+4. Wait
+
+5. Profit!
+
 ## Contributing
 
 I have no idea why you'd want to contribute to this project. You are welcome to submit a pull request, but I have no idea what they are or what to do with it. 
