@@ -1,14 +1,25 @@
-import streamlit as st
-import requests
-import random
+"""
+This code is the front end of the website
 
-stock = ""
-buy_it = 0
+Webdev is hard so I'm using the Streamlit as my framework
+"""
+
+# Imports
+import random  # Pick random messages to help with UX
+import requests  # Get requests from my own API
+import streamlit as st  # Framework
+
+# Global stock and prediction values because scoping is hard
+stock = ""  # Stock name
+buy_it = 0  # Prediction
+
 
 def main():
+    # Get the global variables to scope them in
     global stock
     global buy_it
 
+    # All my error messages that don't help the user, but are just for UX for fun
     error_messages = [
         "Something went wrong... have you tried killing processes, score, or sacrifice children?",
         "There's an error, are all your versions and flavors right? Consult Gordon Ramsay?",
@@ -21,28 +32,37 @@ def main():
         "You haven't had an error message in at least one click, so here's one to let you know I care <3"
     ]
 
+    # Website title and first line
     st.title("Happy Stocks")
-    st.info(
-        "Buying stocks off of happiness, not math (Much like how I do my STAT tests)"
-    )
+    st.info("Buying stocks off of happiness, not math (Much like how I do my STAT tests)")
 
+    # Deal with the submission form
     with st.form("my_form"):
+        # Form prompt
         prompt = st.text_input(
             "Stock: (Leave Blank for Random)",
             max_chars=5,
         )
 
+        # Submission button
         submitted = st.form_submit_button("Submit")
 
+        # When clicking submission button
         if submitted:
+            # Python scoping go brrrrrrr
             url = ""
+
+            # Figure out if generating random prompt or not
             if prompt == "":
                 url = "http://localhost:8000/rstock"
             else:
                 url = "http://localhost:8000/stock"
 
+            # Cool spinner while getting prediction
             with st.spinner("Crunching (real) numbers..."):
+                # Sometime there are really random errors, although I can't recreate any of them
                 try:
+                    # Get response from my API
                     response = requests.get(
                         url=url,
                         params={
@@ -51,20 +71,32 @@ def main():
                         stream=True,
                     )
 
+                    # Decode response and make it usable
                     response = response.content.decode("utf-8")[1:-1].split(",")
                     stock = response[0]
                     buy_it = response[1]
 
+                # Handle exception
                 except Exception as e:
+                    # Print a random error message for fun, plus the actual exception
                     st.error(str(f"{random.choice(error_messages)}\n\n{e}"))
 
+                # Regardless of what happens, update the stock predictions
                 finally:
+                    # Make 3 columns of 25%, 25%, 50%
                     col1, col2, col3 = st.columns([1, 1, 2])
+
+                    # Column 1 shows the stock selected
                     with col1:
                         st.metric("Last Stock Selected", stock)
+
+                    # Column 2 shows the prediction
                     with col2:
                         st.metric("How Happy It'll Make You", str(f"{round(float(buy_it) * 100, 2)} %"))
+
+                    # Column 3 is just for fun and shows a random verdict based on prediction
                     with col3:
+                        # Random verdicts that don't mean much
                         verdicts = [
                             # Bad, is under 0.1
                             [
@@ -103,6 +135,7 @@ def main():
                             ]
                         ]
 
+                        # Display correct verdict based on numbers I made up
                         if float(buy_it) < 0.1:
                             st.metric("Really Bad")
                             st.markdown(f"{random.choice(verdicts[0])}")
@@ -118,6 +151,7 @@ def main():
                         else:
                             st.subheader("Really Good")
                             st.markdown(f"{random.choice(verdicts[4])}")
+
 
 if __name__ == "__main__":
     main()
