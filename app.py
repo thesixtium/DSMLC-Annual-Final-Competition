@@ -137,7 +137,7 @@ def main():
 
                         # Display correct verdict based on numbers I made up
                         if float(buy_it) < 0.1:
-                            st.metric("Really Bad")
+                            st.subheader("Really Bad")
                             st.markdown(f"{random.choice(verdicts[0])}")
                         elif float(buy_it) < 0.2:
                             st.subheader("Bad")
