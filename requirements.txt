@@ -1,0 +1,10 @@
+requests
+streamlit
+joblib
+pandas
+fastapi
+scikit-learn==1.1.2
+lightgbm
+catboost
+xgboost
+"uvicorn[standard]"

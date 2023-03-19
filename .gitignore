@@ -1,2 +1,8 @@
 
 ~*
+venv
+.ipynb_checkpoints
+catboost_info
+89F19B00
+*.pkl
+*.pdf
